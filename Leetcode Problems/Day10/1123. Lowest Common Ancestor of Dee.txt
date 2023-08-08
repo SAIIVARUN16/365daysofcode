@@ -1,0 +1,21 @@
+//1123. Lowest Common Ancestor of Deepest Leaves
+class Solution {
+public:
+    TreeNode* lcaDeepestLeaves(TreeNode* root) {
+         return lca(root);
+    }
+    
+    TreeNode* lca(TreeNode* root){
+        if(!root) return NULL;
+        int l=height(root->left); 
+        int r=height(root->right);
+        if(l==r) return root;         
+        else if(l>r) return lca(root->left);
+        return lca(root->right);
+    }
+    
+    int height(TreeNode* root){
+        if(!root) return 0;
+        return 1+max(height(root->left),height(root->right));
+     }
+};

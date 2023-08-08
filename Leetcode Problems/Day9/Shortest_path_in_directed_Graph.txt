@@ -1,0 +1,43 @@
+// Shortest path in directed Graph having edge weights
+    void dfs(int start,vector<int>&vis,vector<pair<int,int>> adj[],vector<int>&st){
+	    vis[start]=1;
+	    for(pair<int,int> p:adj[start]){
+	        if(!vis[p.first]){
+	            vis[p.first]=1;
+	            dfs(p.first,vis,adj,st);
+	        }
+	    }
+	    st.push_back(start);
+	}
+    vector<int> shortestPath(int n,int m, vector<vector<int>>& edges){
+        vector<pair<int,int>> adj[n];
+        for(int i=0;i<m;i++){
+            adj[edges[i][0]].push_back({edges[i][1],edges[i][2]});
+        }
+        vector<int> topo;
+        vector<int>vis(n,0);
+	    for(int i=0;i<n;i++){
+	        if(!vis[i]){
+	            dfs(i,vis,adj,topo);
+	        }
+	    }
+        reverse(topo.begin(),topo.end());
+        vector<int>dist(n);
+        for(int i=0;i<n;i++) dist[i]=INT_MAX-200;
+        dist[0]=0;
+        for(int node:topo){
+            for(pair<int,int>p:adj[node]){
+                int neighbour=p.first;
+                int weight=p.second;
+                if(weight+dist[node]<dist[neighbour]){
+                    dist[neighbour]=weight+dist[node];
+                }
+            }
+        }
+        for(int i=0;i<n;i++){
+            if(dist[i]==INT_MAX-200){
+                dist[i]=-1;
+            }
+        }
+        return dist;
+    }
